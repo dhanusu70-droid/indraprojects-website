@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior:smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INDRA PROJECTS – IT Solutions &amp; Branding Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>tailwind.config={theme:{extend:{colors:{navy:'#07122b',navy2:'#0b1d44',gold:'#fbbf24',ember:'#f97316'},fontFamily:{sans:['Poppins','system-ui','sans-serif']}}}}</script>
+<style>
+body{background:#07122b;color:#fff;font-family:'Poppins',system-ui,sans-serif;margin:0;padding-top:env(safe-area-inset-top,0px)}
+h1,h2,h3{text-shadow:0 2px 14px rgba(0,0,0,.45)}.rv{opacity:0;transform:translateY(28px);transition:all .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+.grid-bg{background-image:linear-gradient(rgba(251,191,36,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(251,191,36,.06) 1px,transparent 1px);background-size:48px 48px}
+.gtext{background:linear-gradient(90deg,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}.fl{animation:fl 5s ease-in-out infinite}
+@keyframes sp{to{transform:rotate(360deg)}}.sp{animation:sp 40s linear infinite}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>window.A={"p1": "assets/p1.jpg", "p2": "assets/p2.jpg", "p3": "assets/p3.jpg", "p4": "assets/p4.jpg", "p5": "assets/p5.jpg", "p6": "assets/p6.jpg", "logoFull": "assets/logoFull.jpg", "logo": "assets/logo.jpg", "poster": "assets/poster.jpg", "video": "assets/video.mp4"};</script>
+<script type="text/plain" id="src">
+const { useState, useEffect, useRef } = React;
+
+const P: Record<string,string> = {
+phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.500 19.500 0 0 1-6-6A19.8 19.8 0 0 1 2.100 4.200 2 2 0 0 1 4.100 2h3a2 2 0 0 1 2 1.700c.1 1 .4 1.900.7 2.800a2 2 0 0 1-.5 2.100L8.100 9.900a16 16 0 0 0 6 6l1.300-1.300a2 2 0 0 1 2.100-.4c.9.300 1.800.6 2.800.7a2 2 0 0 1 1.700 2z"/>',
+user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+linkedin:'<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>',
+youtube:'<path d="M2.500 17a24.100 24.100 0 0 1 0-10 2 2 0 0 1 1.400-1.400 49.600 49.600 0 0 1 16.200 0A2 2 0 0 1 21.500 7a24.100 24.100 0 0 1 0 10 2 2 0 0 1-1.400 1.400 49.600 49.600 0 0 1-16.200 0A2 2 0 0 1 2.500 17"/><path d="m10 15 5-3-5-3z"/>',
+menu:'<path d="M4 12h16M4 6h16M4 18h16"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',
+arrow:'<path d="M5 12h14m-7-7 7 7-7 7"/>',globe:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>',
+layout:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+pen:'<path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.6 7.6"/><circle cx="11" cy="11" r="2"/>',
+star:'<path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9-6.2-3.3-6.2 3.3L7 14.2 2 9.3l6.9-1z"/>',
+mega:'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+server:'<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/>',
+shield:'<path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.200-2.700a1.200 1.200 0 0 1 1.500 0C14.500 3.800 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+bulb:'<path d="M15 14c.2-1 .7-1.700 1.500-2.500 1-.9 1.500-2.200 1.500-3.500A6 6 0 0 0 6 8c0 1 .2 2.200 1.500 3.500.7.7 1.300 1.500 1.500 2.500M9 18h6M10 22h4"/>',
+award:'<circle cx="12" cy="8" r="6"/><path d="M15.500 12.900 17 22l-5-3-5 3 1.500-9.100"/>',
+code:'<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>',
+users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.900M16 3.100a4 4 0 0 1 0 7.800"/>',
+heart:'<path d="M19 14c1.500-1.500 3-3.200 3-5.500A5.500 5.500 0 0 0 16.500 3c-1.800 0-3 .5-4.500 2-1.500-1.500-2.700-2-4.500-2A5.500 5.500 0 0 0 2 8.500c0 2.300 1.500 4 3 5.500l7 7z"/>',
+trophy:'<path d="M6 9H4.500a2.500 2.500 0 0 1 0-5H6M18 9h1.500a2.500 2.500 0 0 0 0-5H18M4 22h16M10 14.700V17c0 .6-.5 1-2 1.200C7.800 18.800 7 20.200 7 22M14 14.7V17c0 .6.5 1 2 1.2 1.2.6 2 2 2 3.8M18 2H6v7a6 6 0 0 0 12 0V2z"/>',
+mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.970 5.700a1.940 1.940 0 0 1-2.060 0L2 7"/>',
+msg:'<path d="M7.900 20A9 9 0 1 0 4 16.100L2 22z"/>',send:'<path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/>',
+check:'<path d="M20 6 9 17l-5-5"/>',insta:'<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.400A4 4 0 1 1 12.600 8 4 4 0 0 1 16 11.400zM17.500 6.500h.01"/>',
+fb:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>'};
+const Ic = ({n,c='w-6 h-6'}:{n:string;c?:string}) => (
+  <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{__html:P[n]}}/>
+);
+
+const Logo = ({s=44}:{s?:number}) => <img src={(window as any).A.logo} width={s} height={s} alt="INDRA PROJECTS logo" className="rounded-full bg-white object-cover shrink-0" style={{width:s,height:s}}/>;
+const A = (window as any).A;
+const BG = () => (<div className="fixed inset-0 -z-10 bg-navy"><video autoPlay muted loop playsInline poster={A.poster} src={A.video} className="w-full h-full object-cover"/><div className="absolute inset-0 bg-gradient-to-b from-navy/25 to-navy/40"/></div>);
+
+const useReveal = () => {
+  useEffect(() => {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12});
+    document.querySelectorAll('.rv').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+};
+
+const Head = ({k,t,d}:{k:string;t:string;d?:string}) => (
+  <div className="rv text-center max-w-2xl mx-auto mb-14">
+    <span className="inline-block text-xs font-semibold tracking-[.25em] uppercase text-gold mb-3">{k}</span>
+    <h2 className="text-3xl md:text-4xl font-bold leading-tight">{t}</h2>
+    {d && <p className="mt-4 text-slate-300">{d}</p>}
+  </div>
+);
+
+const WA = 'https://wa.me/919943680611?text=' + encodeURIComponent('Hello INDRA PROJECTS, I would like to discuss a project.');
+const links = ['Home','About','Services','Projects','Contact'];
+
+const Nav = () => {
+  const [open,setOpen] = useState(false); const [sc,setSc] = useState(false);
+  useEffect(() => { const f = () => setSc(window.scrollY > 30); f(); window.addEventListener('scroll', f); return () => window.removeEventListener('scroll', f); }, []);
+  return (
+    <header className={'fixed top-0 inset-x-0 z-50 transition-all ' + (sc || open ? 'bg-navy/50 backdrop-blur-xl border-b border-white/15' : 'bg-transparent')} style={{paddingTop:'env(safe-area-inset-top,0px)'}}>
+      <div className="max-w-7xl mx-auto px-5 h-20 flex items-center justify-between">
+        <a href="#home" className="flex items-center gap-3"><Logo/><div className="leading-tight"><div className="font-extrabold text-lg tracking-wide">INDRA<span className="text-gold">PROJECTS</span></div><div className="text-[10px] text-slate-300 tracking-wider">IT SOLUTIONS &amp; BRANDING AGENCY</div></div></a>
+        <nav className="hidden md:flex items-center gap-8">
+          {links.map(l => <a key={l} href={'#'+l.toLowerCase()} className="text-sm font-medium text-slate-200 hover:text-gold transition relative group">{l}<span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gold group-hover:w-full transition-all"/></a>)}
+          <a href="#contact" className="px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-ember text-navy font-bold text-sm hover:scale-105 transition">Get Started</a>
+        </nav>
+        <button aria-label="Menu" className="md:hidden p-2" onClick={() => setOpen(!open)}><Ic n={open?'x':'menu'}/></button>
+      </div>
+      {open && <div className="md:hidden px-5 pb-6 flex flex-col gap-1">{links.map(l => <a key={l} onClick={() => setOpen(false)} href={'#'+l.toLowerCase()} className="py-3 border-b border-white/10 text-slate-200">{l}</a>)}<a onClick={() => setOpen(false)} href="#contact" className="mt-4 text-center py-3 rounded-full bg-gradient-to-r from-gold to-ember text-navy font-bold">Get Started</a></div>}
+    </header>
+  );
+};
+
+const Hero = () => (
+  <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24">
+    <div className="absolute inset-0 bg-gradient-to-br from-navy/20 via-transparent to-navy/40"/>
+    
+    <div className="absolute -top-20 right-0 w-[600px] h-[600px] rounded-full bg-ember/20 blur-3xl"/>
+    <div className="absolute bottom-0 left-0 w-[500px] h-[400px] rounded-full bg-sky-500/15 blur-3xl"/>
+    
+    <div className="relative max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span className="rv inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/40 bg-gold/10 text-gold text-xs font-semibold tracking-widest">DREAM • DESIGN • DEVELOP • DELIVER</span>
+        <h1 className="rv mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1]">IT Solutions &amp; <span className="gtext">Creative Digital Experiences</span></h1>
+        <p className="rv mt-6 text-lg text-slate-300 max-w-xl">INDRA PROJECTS is an IT solutions and branding agency. We turn ideas into websites, applications and brands that help your business grow. <b className="text-white">Your Growth. Our Mission.</b></p>
+        <div className="rv mt-6 flex flex-wrap gap-2">{["Website Development","UI/UX Design","Branding","Digital Marketing"].map(c => <span key={c} className="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-xl border border-white/25 text-xs font-medium">{c}</span>)}</div>
+        <div className="rv mt-9 flex flex-wrap gap-4">
+          <a href="#contact" className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-gold to-ember text-navy font-bold shadow-lg shadow-ember/30 hover:scale-105 transition">Get Started <span className="group-hover:translate-x-1 transition"><Ic n="arrow" c="w-5 h-5"/></span></a>
+          <a href="#services" className="px-8 py-4 rounded-full border border-white/25 hover:border-gold hover:text-gold font-semibold transition">Our Services</a>
+        </div>
+      </div>
+      <div className="rv relative hidden lg:flex justify-center">
+        <div className="absolute w-[420px] h-[420px] rounded-full border border-dashed border-gold/40 sp"/>
+        <div className="fl relative w-[420px] rounded-3xl bg-navy/40 backdrop-blur-xl border border-white/25 shadow-2xl overflow-hidden">
+          <div className="flex gap-2 px-4 py-3 bg-black/30"><i className="w-3 h-3 rounded-full bg-red-400"/><i className="w-3 h-3 rounded-full bg-gold"/><i className="w-3 h-3 rounded-full bg-emerald-400"/></div>
+          <div className="p-6 space-y-3 font-mono text-sm">
+            {['Dream','Design','Develop','Deliver'].map((w,i) => <div key={w} className="flex items-center gap-3"><span className="text-slate-500">0{i+1}</span><span className="text-ember">const</span><span className="text-sky-300">{w.toLowerCase()}</span><span className="text-slate-400">=</span><span className="text-gold">"{w}"</span></div>)}
+            <div className="pt-3 h-24 rounded-lg bg-gradient-to-r from-gold/20 to-ember/20 flex items-center justify-center"><Logo s={64}/></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const About = () => (
+  <section id="about" className="py-24 text-white">
+    <div className="max-w-7xl mx-auto px-5 grid lg:grid-cols-2 gap-14 items-center">
+      <div className="rv relative">
+        <img src={A.p2} alt="Build your website" className="aspect-[4/3] w-full object-cover rounded-3xl shadow-2xl"/><img src={A.logoFull} alt="INDRA PROJECTS" className="absolute -top-5 left-3 h-16 rounded-xl shadow-xl bg-white p-1"/>
+        <div className="absolute -bottom-6 -right-2 sm:right-6 bg-gradient-to-r from-gold to-ember text-navy rounded-3xl px-6 py-4 shadow-xl"><div className="font-extrabold">Your Growth.</div><div className="font-extrabold">Our Mission.</div></div>
+      </div>
+      <div className="rv">
+        <span className="text-xs font-semibold tracking-[.25em] text-ember uppercase">About Us</span>
+        <h2 className="mt-3 text-3xl md:text-4xl font-bold">Professional IT &amp; branding partner for your business</h2>
+        <p className="mt-5 text-slate-100">INDRA PROJECTS is an IT Solutions &amp; Branding Agency. We combine technology and creativity to build digital products and brand identities that help businesses stand out and grow.</p>
+        <p className="mt-3 text-slate-100">Our mission is simple: your growth is our mission. We follow a clear journey of Dream, Design, Develop and Deliver, with teamwork, dedication and a focus on success in every project.</p>
+        <ul className="mt-6 grid sm:grid-cols-2 gap-3">{['Websites & web apps','UI/UX & branding','Digital marketing','IT solutions'].map(t => <li key={t} className="flex items-center gap-2 font-medium"><span className="w-6 h-6 rounded-full bg-gold/30 text-ember flex items-center justify-center"><Ic n="check" c="w-4 h-4"/></span>{t}</li>)}</ul>
+        <a href="#contact" className="mt-8 inline-flex px-7 py-3 rounded-full bg-navy text-white font-semibold hover:bg-ember transition">Talk to Us</a>
+      </div>
+    </div>
+  </section>
+);
+
+const services = [
+  ['globe','Website Development','Fast, responsive, SEO-friendly websites built for your brand.','p1'],
+  ['layout','Web Applications','Custom web apps and dashboards tailored to your workflow.','p2'],
+  ['pen','UI/UX Design','Clean, intuitive interfaces designed around your users.','p3'],
+  ['star','Branding','Logos and brand identities that make you memorable.','p4'],
+  ['mega','Digital Marketing','Creative campaigns and content that grow your reach.','p5'],
+  ['server','IT Solutions','Reliable technology solutions and support for your business.','p6']];
+const Services = () => (
+  <section id="services" className="py-24">
+    <div className="max-w-7xl mx-auto px-5">
+      <Head k="What We Offer" t="Get the best IT services & solutions" d="Everything your business needs to build, launch and grow online."/>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map(([i,t,d,im]) => (
+          <div key={t} className="rv group rounded-3xl overflow-hidden bg-navy/40 backdrop-blur-xl border border-white/25 hover:border-gold/60 hover:-translate-y-2 transition duration-300">
+            <div className="relative h-44 overflow-hidden"><img src={A[im]} alt={t} className="w-full h-full object-cover group-hover:scale-110 transition duration-700"/><div className="absolute inset-0 bg-gradient-to-t from-navy/90 to-transparent"/><div className="absolute bottom-3 left-5 w-12 h-12 rounded-xl bg-gradient-to-br from-gold to-ember text-navy flex items-center justify-center group-hover:rotate-6 transition"><Ic n={i}/></div></div>
+            <div className="p-7 pt-5"><h3 className="text-xl font-semibold">{t}</h3><p className="mt-2 text-slate-300 text-sm">{d}</p>
+            <a href="#contact" className="mt-5 inline-flex items-center gap-1 text-gold text-sm font-semibold">Enquire <Ic n="arrow" c="w-4 h-4"/></a></div>
+          </div>))}
+      </div>
+    </div>
+  </section>
+);
+
+const Why = () => (
+  <section className="py-24 text-white">
+    <div className="max-w-7xl mx-auto px-5">
+      <Head k="Why Choose Us" t="Built on quality, creativity and innovation"/>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[['award','Quality','Careful checks on requirements, documentation and implementation.'],['bulb','Creativity','Original ideas and designs, never copy-paste templates.'],['code','Innovation','Modern tools and technologies for future-ready solutions.'],['shield','Professional Development','Clean, maintainable code delivered on time.']].map(([i,t,d]) => (
+          <div key={t} className="rv text-center p-8 rounded-3xl bg-navy/40 backdrop-blur-xl border border-white/25 hover:border-gold transition">
+            <div className="mx-auto w-16 h-16 rounded-full bg-white/15 text-gold flex items-center justify-center"><Ic n={i} c="w-7 h-7"/></div>
+            <h3 className="mt-5 font-bold text-lg">{t}</h3><p className="mt-2 text-sm text-slate-100">{d}</p>
+          </div>))}
+      </div>
+    </div>
+  </section>
+);
+
+const projects = [
+  ['Website Development','from-sky-600 to-navy2','globe'],['Web Applications','from-orange-500 to-amber-400','layout'],['UI/UX Design','from-teal-500 to-navy2','pen'],
+  ['Branding & Logos','from-amber-400 to-orange-600','star'],['Digital Marketing','from-indigo-600 to-sky-500','mega'],['IT Solutions','from-navy2 to-sky-700','server']];
+const Projects = () => (
+  <section id="projects" className="py-24">
+    <div className="max-w-7xl mx-auto px-5">
+      <Head k="Our Projects" t="Work we love to create" d="A look at the kinds of projects we deliver. Real case studies are added as projects are completed."/>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map(([t,g,i]) => (
+          <div key={t} className={'rv group relative h-64 rounded-3xl overflow-hidden bg-gradient-to-br ' + g}>
+            <div className="absolute inset-0 grid-bg opacity-60"/>
+            <div className="absolute left-6 right-6 top-6 h-32 rounded-lg bg-white/90 shadow-xl group-hover:-translate-y-2 transition duration-500 p-3"><div className="flex gap-1"><i className="w-2 h-2 rounded-full bg-red-400"/><i className="w-2 h-2 rounded-full bg-gold"/><i className="w-2 h-2 rounded-full bg-emerald-400"/></div><div className="mt-3 h-3 w-2/3 rounded bg-navy/80"/><div className="mt-2 h-2 w-full rounded bg-slate-300"/><div className="mt-1 h-2 w-4/5 rounded bg-slate-300"/></div>
+            <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-navy/95 to-transparent flex items-center gap-3"><span className="text-gold"><Ic n={i}/></span><span className="font-semibold">{t}</span></div>
+          </div>))}
+      </div>
+    </div>
+  </section>
+);
+
+const Process = () => (
+  <section className="py-24">
+    <div className="max-w-7xl mx-auto px-5">
+      <Head k="Our Working Process" t="Dream • Design • Develop • Deliver"/>
+      <div className="grid md:grid-cols-4 gap-6 relative">
+        {[['Dream','We listen, understand your goals and shape the idea.','bulb'],['Design','We craft UI/UX and brand visuals that fit your vision.','pen'],['Develop','We build with clean, reliable, modern code.','code'],['Deliver','We verify quality and submit on time.','target']].map(([t,d,i],k) => (
+          <div key={t} className="rv relative p-7 rounded-3xl bg-navy/40 backdrop-blur-xl border border-white/25 hover:border-ember transition">
+            <span className="absolute -top-4 left-7 w-9 h-9 rounded-full bg-gradient-to-r from-gold to-ember text-navy font-extrabold flex items-center justify-center">{k+1}</span>
+            <div className="text-gold mt-3"><Ic n={i} c="w-8 h-8"/></div><h3 className="mt-4 text-xl font-semibold">{t}</h3><p className="mt-2 text-sm text-slate-300">{d}</p>
+          </div>))}
+      </div>
+    </div>
+  </section>
+);
+
+const Values = () => (
+  <section className="py-24 text-white">
+    <div className="max-w-7xl mx-auto px-5">
+      <Head k="Team & Values" t="Together, we achieve our goals" d="Every second counts. We work as one team to complete projects with quality and on time."/>
+      <div className="grid md:grid-cols-3 gap-6">
+        {[['users','Teamwork','Great results come from people working together.'],['heart','Dedication','We give every project our full commitment.'],['trophy','Success','Your success is the measure of ours.']].map(([i,t,d]) => (
+          <div key={t} className="rv p-10 rounded-3xl bg-navy/40 backdrop-blur-xl border border-white/25 text-white text-center hover:-translate-y-2 transition duration-300 shadow-xl">
+            <div className="mx-auto w-16 h-16 rounded-3xl bg-gradient-to-br from-gold to-ember text-navy flex items-center justify-center"><Ic n={i} c="w-8 h-8"/></div>
+            <h3 className="mt-5 text-2xl font-bold">{t}</h3><p className="mt-2 text-slate-300 text-sm">{d}</p>
+          </div>))}
+      </div>
+    </div>
+  </section>
+);
+
+const Contact = () => {
+  const [f,setF] = useState({name:'',email:'',phone:'',msg:''}); const [done,setDone] = useState(false);
+  const set = (k:string) => (e:any) => setF({...f,[k]:e.target.value});
+  const submit = (e:any) => {
+    e.preventDefault();
+    const t = `Hello INDRA PROJECTS,\nName: ${f.name}\nEmail: ${f.email}\nPhone: ${f.phone}\n${f.msg}`;
+    window.open('https://wa.me/919943680611?text=' + encodeURIComponent(t), '_blank'); setDone(true);
+  };
+  const inp = 'w-full px-4 py-3 rounded-xl bg-white/10 border border-white/15 focus:border-gold outline-none placeholder:text-slate-400';
+  return (
+    <section id="contact" className="py-24 relative overflow-hidden">
+      
+      <div className="relative max-w-6xl mx-auto px-5">
+        <Head k="Contact Us" t="Let's build something great together" d="Tell us about your project. Your message opens in WhatsApp so we can reply quickly."/>
+        <div className="grid lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2">
+            <div className="p-7 rounded-3xl bg-navy/40 backdrop-blur-xl border border-white/25 space-y-5">
+              {[['user','CEO','Arul Kumar',''],['phone','Phone','+91 99436 80611','tel:+919943680611'],['mail','Email','arulkumar123@gmail.com','mailto:arulkumar123@gmail.com'],['globe','Website','www.indraprojects.com','']].map(([i,l,v,h]) => (
+                <div key={l} className="flex items-start gap-4"><span className="text-gold mt-1"><Ic n={i}/></span><div><div className="text-xs text-slate-300">{l}</div>{h ? <a href={h} className="font-medium hover:text-gold break-all">{v}</a> : <div className="font-medium">{v}</div>}</div></div>))}
+              <div className="flex flex-wrap gap-3 pt-2">
+                <a href={WA} target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-ember text-navy font-bold text-sm hover:scale-105 transition"><Ic n="msg" c="w-4 h-4"/> WhatsApp</a>
+                <a href="tel:+919943680611" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold/60 text-gold font-semibold text-sm hover:bg-gold hover:text-navy transition"><Ic n="phone" c="w-4 h-4"/> Call Now</a>
+                <a href="mailto:arulkumar123@gmail.com" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold/60 text-gold font-semibold text-sm hover:bg-gold hover:text-navy transition"><Ic n="mail" c="w-4 h-4"/> Email Us</a>
+              </div>
+              <div className="flex gap-3">{['insta','linkedin','fb','youtube','msg'].map(i => <a key={i} href={i==='msg'?WA:'#contact'} aria-label={i} className="w-10 h-10 rounded-full bg-white/10 hover:bg-gold hover:text-navy flex items-center justify-center transition"><Ic n={i} c="w-5 h-5"/></a>)}</div>
+            </div>
+          </div>
+          <form onSubmit={submit} className="lg:col-span-3 p-8 rounded-3xl bg-navy/40 backdrop-blur-xl border border-white/25 space-y-4">
+            <div className="grid sm:grid-cols-2 gap-4"><input required className={inp} placeholder="Your name" value={f.name} onChange={set('name')}/><input required type="email" className={inp} placeholder="Email address" value={f.email} onChange={set('email')}/></div>
+            <input className={inp} placeholder="Phone (optional)" value={f.phone} onChange={set('phone')}/>
+            <textarea required rows={5} className={inp} placeholder="Tell us about your project" value={f.msg} onChange={set('msg')}/>
+            <button className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-gold to-ember text-navy font-bold hover:scale-105 transition"><Ic n="send" c="w-5 h-5"/> Send Message</button>
+            {done && <p className="text-emerald-300 text-sm">Thank you! Please send the prefilled message in WhatsApp.</p>}
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => (
+  <footer className="bg-navy/55 backdrop-blur-xl pt-14 pb-8 border-t border-gold/20">
+    <div className="max-w-7xl mx-auto px-5 grid md:grid-cols-3 gap-10">
+      <div><div className="flex items-center gap-3"><Logo/><div className="font-extrabold text-lg">INDRA<span className="text-gold">PROJECTS</span></div></div><p className="mt-4 text-sm text-slate-400">IT Solutions &amp; Branding Agency. Your Growth. Our Mission.</p></div>
+      <div><h4 className="font-semibold text-gold mb-4">Quick Links</h4><div className="flex flex-col gap-2 text-sm text-slate-300">{links.map(l => <a key={l} href={'#'+l.toLowerCase()} className="hover:text-gold">{l}</a>)}</div></div>
+      <div><h4 className="font-semibold text-gold mb-4">Connect</h4><div className="flex gap-3">{['insta','linkedin','fb','youtube','msg'].map(i => <a key={i} href={i==='msg'?WA:'#contact'} aria-label={i} className="w-10 h-10 rounded-full bg-white/10 hover:bg-gold hover:text-navy flex items-center justify-center transition"><Ic n={i} c="w-5 h-5"/></a>)}</div><div className="mt-5 text-sm text-slate-300 space-y-1"><div>CEO: Arul Kumar</div><a className="block hover:text-gold" href="tel:+919943680611">+91 99436 80611</a><a className="block hover:text-gold" href="mailto:arulkumar123@gmail.com">arulkumar123@gmail.com</a><div>www.indraprojects.com</div></div><p className="mt-4 text-sm text-slate-400">Teamwork • Dedication • Success</p></div>
+    </div>
+    <div className="mt-10 pt-6 border-t border-white/10 text-center text-xs text-slate-500">© 2026 INDRA PROJECTS. All rights reserved.</div>
+  </footer>
+);
+
+const App = () => { useReveal(); return (<><BG/><Nav/><Hero/><About/><Services/><Why/><Projects/><Process/><Values/><Contact/><Footer/></>); };
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script>
+try{
+var out=Babel.transform(document.getElementById('src').textContent,{filename:'app.tsx',presets:[['typescript',{isTSX:true,allExtensions:true}],'react']}).code;
+var s=document.createElement('script');s.text=out;document.body.appendChild(s);
+}catch(e){document.getElementById('root').innerHTML='<pre style="padding:2rem;color:#fbbf24">'+e+'</pre>';}
+</script>
+</body>
+</html>
